@@ -1,20 +1,68 @@
 ---
 title: "Portfolio 7"
-output:
-  html_document:
-    df_print: paged
+output: html_document
 ---
 
 
 ```{r}
 library(haven)
+library(tidyverse)
+library(ggplot2)
 CLEAN_COPY_MASTER_BIT_4ITEM_PC_5MAR21 <- read_sav("~/Documents/Grad School Fall 2020/Research/Data/EWB Data.SPSS/CLEAN COPY MASTER BIT 4ITEM_PC 5MAR21.sav")
 View(CLEAN_COPY_MASTER_BIT_4ITEM_PC_5MAR21)
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+#Relationship between intial well-being levels and perceived change
+```{r graph}
+m_WB=lm(PC_Wk45_mean~BIT_A_Mean, data = CLEAN_COPY_MASTER_BIT_4ITEM_PC_5MAR21) #Create the linear regression
+summary(m_WB)
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
 
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+###A one point increase in initial BIT is associated with a .47 increase in PC WB at week 45
 
+ggplot(CLEAN_COPY_MASTER_BIT_4ITEM_PC_5MAR21, aes(x=BIT_A_Mean, y=PC_Wk45_mean)) + 
+  geom_point(shape=18, color="blue")+
+  geom_smooth(method=lm, se=FALSE, linetype="solid",
+             color="gold")
+```
+
+```{r Wk 52}
+m_WB2=lm(PC_Wk52_mean~BIT_A_Mean, data = CLEAN_COPY_MASTER_BIT_4ITEM_PC_5MAR21) #Create the linear regression
+summary(m_WB2)
+
+
+###A one point increase in initial BIT is associated with a .41 increase in PC WB at week 45
+
+ggplot(CLEAN_COPY_MASTER_BIT_4ITEM_PC_5MAR21, aes(x=BIT_A_Mean, y=PC_Wk52_mean)) + 
+  geom_point(shape=18, color="purple")+
+  geom_smooth(method=lm, se=FALSE, linetype="solid",
+             color="gold")
+
+```
+
+```{r Actual Change}
+m_C1=lm(T1_Change_Mean~BIT_A_Mean, data = CLEAN_COPY_MASTER_BIT_4ITEM_PC_5MAR21) #Create the linear regression
+summary(m_C1)
+
+
+###A one point increase in initial BIT is associated with a -.28 chnage in actual WB at week 45
+
+ggplot(CLEAN_COPY_MASTER_BIT_4ITEM_PC_5MAR21, aes(x=BIT_A_Mean, y=T1_Change_Mean)) + 
+  geom_point(shape=18, color="blue")+
+  geom_smooth(method=lm, se=FALSE, linetype="solid",
+             color="gold")
+```
+
+```{r AC 52}
+m_C2=lm(T2_Change_Mean~BIT_A_Mean, data = CLEAN_COPY_MASTER_BIT_4ITEM_PC_5MAR21) #Create the linear regression
+summary(m_C2)
+
+
+###A one point increase in initial BIT is associated with a -.31 chnadge in actual WB at week 52
+
+ggplot(CLEAN_COPY_MASTER_BIT_4ITEM_PC_5MAR21, aes(x=BIT_A_Mean, y=T2_Change_Mean)) + 
+  geom_point(shape=18, color="green")+
+  geom_smooth(method=lm, se=FALSE, linetype="solid",
+             color="gold")
+
+```
